@@ -338,7 +338,7 @@ class ScanPresenter constructor(
                     }.observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             iView.getPaperRect().onCornersDetected(it)
-
+                            shut()
                         }, {
                             iView.getPaperRect().onCornersNotDetected()
                         })
