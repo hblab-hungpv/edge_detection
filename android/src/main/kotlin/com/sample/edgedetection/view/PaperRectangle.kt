@@ -197,4 +197,10 @@ class PaperRectangle : View {
         bl.x = bl.x.times(ratioX)
         bl.y = bl.y.times(ratioY)
     }
+
+    fun reset() {
+        cropMode = false
+        path.reset()
+        invalidate()
+    }
 }

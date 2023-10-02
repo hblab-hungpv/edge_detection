@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
 
     try {
       //Make sure to await the call to detectEdge.
-      success = await EdgeDetection.detectEdge(
+      final path = await EdgeDetection.detectEdge(
         imagePath,
         canUseGallery: true,
         androidScanTitle: 'Scanning', // use custom localizations for android
@@ -51,21 +52,21 @@ class _MyAppState extends State<MyApp> {
         androidCropBlackWhiteTitle: 'Black White',
         androidCropReset: 'Reset',
       );
-      print("success: $success");
+      print("xxxxxx: $path");
+
+      final List<String> images = ImageDetected().imageDetectedFromJson(path);
+
+      setState(() {
+        _imagePath = images[0];
+      });
     } catch (e) {
-      print(e);
+      print('xxxxxx: $e');
     }
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
-    setState(() {
-      if(success){
-        _imagePath = imagePath;
-      }
-    });
   }
 
   Future<void> getImageFromGallery() async {
@@ -149,4 +150,12 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+class ImageDetected {
+  List<String> imageDetectedFromJson(String str) =>
+      List<String>.from(json.decode(str).map((x) => x));
+
+  String imageDetectedToJson(List<String> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x)));
 }

@@ -14,4 +14,9 @@
 
     <string name="next">Next</string>
     <string name="done">Done</string>
+    <string name="auto">AUTO</string>
+    <string name="crop_header">Crop</string>
+    <string name="preview">Preview</string>
+    <string name="save_as_draft">Save as Draft</string>
+    <string name="submit_now">Submit now</string>
 </resources>

@@ -1,14 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sample.edgedetection">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera.any" android:required="true" />
 
-<uses-permission
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+
+    <uses-permission
         android:name="android.permission.FLASHLIGHT"
+        android:maxSdkVersion="30"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
-        android:protectionLevel="normal"
-        android:maxSdkVersion="30"/>
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="false"
@@ -16,13 +20,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".review.ReviewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
+        <activity
             android:name=".scan.ScanActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".crop.CropActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

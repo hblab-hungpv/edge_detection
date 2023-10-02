@@ -1,89 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ImageView
-        android:id="@+id/picture_cropped"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-    <!-- <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"> -->
-
-    <ImageView
-        android:id="@+id/paper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY" />
-
-    <com.sample.edgedetection.view.PaperRectangle
-        android:id="@+id/paper_rect"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorTransparent" />
-
-    <!-- </RelativeLayout> -->
-
-    <!--<TextView
-        android:id="@+id/crop"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentEnd="true"
-        android:background="?android:selectableItemBackground"
-        android:gravity="end"
-        android:visibility="gone"
-        android:text="@string/crop" />
-
-    <TextView
-        android:id="@+id/enhance"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentEnd="true"
-        android:background="?android:selectableItemBackground"
-        android:gravity="end"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:text="@string/enhance" />
-
-    <ImageButton
-        android:id="@+id/proceed"
-        android:background="@drawable/round_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_done_black_24dp" />-->
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/relativeLayout2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        >
+        android:background="@color/colorBlack"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/crop"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/round_button"
-            android:padding="12dp"
-            app:srcCompat="@drawable/ic_crop"
+            android:id="@+id/close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="false"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_baseline_close_24"
             app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/crop_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/crop_header"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+
+
+        <ImageView
+            android:id="@+id/picture_cropped"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <!-- <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"> -->
+
+        <ImageView
+            android:id="@+id/paper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY" />
+
+        <com.sample.edgedetection.view.PaperRectangle
+            android:id="@+id/paper_rect"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorTransparent" />
+
+        <!-- </RelativeLayout> -->
+
+        <!--<TextView
+            android:id="@+id/crop"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:background="?android:selectableItemBackground"
+            android:gravity="end"
+            android:visibility="gone"
+            android:text="@string/crop" />
+
+        <TextView
+            android:id="@+id/enhance"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:background="?android:selectableItemBackground"
+            android:gravity="end"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:text="@string/enhance" />
+
+        <ImageButton
+            android:id="@+id/proceed"
+            android:background="@drawable/round_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_done_black_24dp" />-->
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/crop"-->
+        <!--            android:layout_width="60dp"-->
+        <!--            android:layout_height="60dp"-->
+        <!--            android:layout_centerInParent="true"-->
+        <!--            android:background="@drawable/round_button"-->
+        <!--            android:padding="12dp"-->
+        <!--            app:srcCompat="@drawable/ic_crop"-->
+        <!--            app:tint="@android:color/white" />-->
+
+        <RelativeLayout
+            android:id="@+id/preview_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#383838"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/crop_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_crop"
+                    app:tint="@color/colorWhite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/crop"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/done_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_done_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/done"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/crop_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#383838"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:id="@+id/crop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_done_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/done"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"
+            android:paddingTop="16dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="16dp">
+
+            <RelativeLayout
+                android:id="@+id/imagePreviewContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:gravity="end">
+
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="50dp"
+                    android:layout_height="65dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/image_review_bg"
+                    android:clipToOutline="true"
+                    android:scaleType="fitXY" />
+
+                <RelativeLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/bg_circle_red">
+
+                    <TextView
+                        android:id="@+id/imageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="1" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,12 +1,14 @@
 package com.sample.edgedetection.crop
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.sample.edgedetection.EdgeDetectionHandler
+import com.sample.edgedetection.ImageModel
 import com.sample.edgedetection.SourceManager
+import com.sample.edgedetection.base.PathUtils
 import com.sample.edgedetection.processor.Corners
 import com.sample.edgedetection.processor.TAG
 import com.sample.edgedetection.processor.cropPicture
@@ -21,7 +23,8 @@ import java.io.FileOutputStream
 
 class CropPresenter(
     private val iCropView: ICropView.Proxy,
-    private val initialBundle: Bundle
+    private val initialBundle: Bundle,
+    private val context: Context
 ) {
     private val picture: Mat? = SourceManager.pic
 
@@ -32,11 +35,15 @@ class CropPresenter(
     private var rotateBitmap: Bitmap? = null
     private var rotateBitmapDegree: Int = -90
 
+    private var paperWidth: Int = 0
+    private var paperHeight: Int = 0
+
     fun onViewsReady(paperWidth: Int, paperHeight: Int) {
+        this.paperWidth = paperWidth
+        this.paperHeight = paperHeight
         iCropView.getPaperRect().onCorners2Crop(corners, picture?.size(), paperWidth, paperHeight)
         val bitmap = Bitmap.createBitmap(
-            picture?.width() ?: 1080, picture?.height()
-                ?: 1920, Bitmap.Config.ARGB_8888
+            picture?.width() ?: 1080, picture?.height() ?: 1920, Bitmap.Config.ARGB_8888
         )
         Utils.matToBitmap(picture, bitmap, true)
         iCropView.getPaper().setImageBitmap(bitmap)
@@ -55,9 +62,7 @@ class CropPresenter(
 
         Observable.create<Mat> {
             it.onNext(cropPicture(picture, iCropView.getPaperRect().getCorners2Crop()))
-        }
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
+        }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
             .subscribe { pc ->
                 Log.i(TAG, "cropped picture: $pc")
                 croppedPicture = pc
@@ -70,6 +75,23 @@ class CropPresenter(
             }
     }
 
+    fun resetImageBeforeCrop() {
+        iCropView.getPaper().visibility = View.VISIBLE
+        iCropView.getPaperRect().visibility = View.VISIBLE
+        iCropView.getCroppedPaper().setImageBitmap(null)
+
+        iCropView.getPaperRect().onCorners2Crop(corners, picture?.size(), paperWidth, paperHeight)
+        val bitmap = Bitmap.createBitmap(
+            picture?.width() ?: 1080, picture?.height() ?: 1920, Bitmap.Config.ARGB_8888
+        )
+        Utils.matToBitmap(picture, bitmap, true)
+        iCropView.getPaper().setImageBitmap(bitmap)
+
+        croppedBitmap = null
+        enhancedPicture = null
+        rotateBitmap = null
+    }
+
     fun enhance() {
         if (croppedBitmap == null) {
             Log.i(TAG, "picture null?")
@@ -80,9 +102,11 @@ class CropPresenter(
             enhancedPicture != null -> {
                 enhancedPicture
             }
+
             rotateBitmap != null -> {
                 rotateBitmap
             }
+
             else -> {
                 croppedBitmap
             }
@@ -90,16 +114,13 @@ class CropPresenter(
 
         Observable.create<Bitmap> {
             it.onNext(enhancePicture(imgToEnhance))
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { pc ->
+
+            enhancedPicture = pc
+            rotateBitmap = enhancedPicture
+
+            iCropView.getCroppedPaper().setImageBitmap(pc)
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { pc ->
-
-                enhancedPicture = pc
-                rotateBitmap = enhancedPicture
-
-                iCropView.getCroppedPaper().setImageBitmap(pc)
-            }
     }
 
     fun reset() {
@@ -139,8 +160,37 @@ class CropPresenter(
         croppedBitmap = croppedBitmap?.rotateInt(rotateBitmapDegree)
     }
 
-    fun save() {
-        val file = File(initialBundle.getString(EdgeDetectionHandler.SAVE_TO) as String)
+    fun save(cropIndex: Int, onSaveSuccess: () -> Unit) {
+
+        val path = PathUtils.getFilesDir(context)
+
+        // Create image path by current system milliseconds and jpeg fomat:  "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+        val imageFilePath = "$path/${(System.currentTimeMillis() / 1000)}.jpeg"
+
+        Log.i("HUNG_DEVxx", "save: $imageFilePath")
+
+        val imageModel = ImageModel(
+            pic = picture, corners = corners, croppedBitmap = croppedBitmap, path = imageFilePath
+        )
+        Log.i("HUNG_DEVxx", "save: $cropIndex")
+
+        if (cropIndex != -1) {
+            Log.i("HUNG_DEVxx", "save: #1")
+            SourceManager.images[cropIndex] = imageModel
+            onSaveSuccess()
+            return
+        }
+        Log.i("HUNG_DEVxx", "save: #2")
+        SourceManager.addImage(imageModel)
+        onSaveSuccess()
+        return
+
+        // Copy from cropedBitmap to originalBitmap
+
+        val originalBitmap: Bitmap? = croppedBitmap?.let { Bitmap.createBitmap(it) }
+
+//        val file = File(initialBundle.getString(EdgeDetectionHandler.SAVE_TO) as String)
+        val file = File(imageFilePath)
 
         val rotatePic = rotateBitmap
         if (null != rotatePic) {
@@ -173,6 +223,15 @@ class CropPresenter(
                 }
             }
         }
+
+//        val imageModel = ImageModel(
+//            pic = picture,
+//            corners = corners,
+//            croppedBitmap = originalBitmap,
+//            path = imageFilePath
+//        )
+//        SourceManager.addImage(imageModel)
+//        onSaveSuccess()
     }
 
     // Extension function to rotate a bitmap
@@ -185,21 +244,12 @@ class CropPresenter(
 
         // Resize the bitmap
         val scaledBitmap = Bitmap.createScaledBitmap(
-            this,
-            width,
-            height,
-            true
+            this, width, height, true
         )
 
         // Create and return the rotated bitmap
         return Bitmap.createBitmap(
-            scaledBitmap,
-            0,
-            0,
-            scaledBitmap.width,
-            scaledBitmap.height,
-            matrix,
-            true
+            scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true
         )
     }
 }

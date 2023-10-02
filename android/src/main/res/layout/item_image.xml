@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/imagePreviewContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="14dp">
+
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="48dp"
+        android:layout_height="64dp"
+        android:background="@drawable/image_review_bg"
+        android:clipToOutline="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/image_unselected_bg" />
+
+
+</LinearLayout>

@@ -1,4 +1,5 @@
 package com.sample.edgedetection.scan
+
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -13,10 +14,13 @@ import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import android.view.Display
 import android.view.SurfaceHolder
+import android.view.View
 import android.widget.Toast
 import com.sample.edgedetection.EdgeDetectionHandler
 import com.sample.edgedetection.REQUEST_CODE
@@ -62,6 +66,8 @@ class ScanPresenter constructor(
     private var mLastClickTime = 0L
     private var shutted: Boolean = true
 
+    var isAutoCapture: Boolean = false
+
     init {
         mSurfaceHolder.addCallback(this)
         executor = Executors.newSingleThreadExecutor()
@@ -77,13 +83,11 @@ class ScanPresenter constructor(
     }
 
     fun start() {
-        mCamera?.startPreview() ?:
-        Log.i(TAG, "mCamera startPreview")
+        mCamera?.startPreview() ?: Log.i(TAG, "mCamera startPreview")
     }
 
     fun stop() {
-        mCamera?.stopPreview() ?:
-        Log.i(TAG, "mCamera stopPreview")
+        mCamera?.stopPreview() ?: Log.i(TAG, "mCamera stopPreview")
     }
 
     val canShut: Boolean get() = shutted
@@ -103,6 +107,11 @@ class ScanPresenter constructor(
             mCamera?.takePicture(null, null, this)
         }
 
+    }
+
+    // Get flash light status
+    fun getFlashStatus(): Boolean {
+        return flashEnabled
     }
 
     fun toggleFlash() {
@@ -207,8 +216,10 @@ class ScanPresenter constructor(
             param?.setPictureSize(pictureSize.width, pictureSize.height)
         }
         val pm = context.packageManager
-        if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS) && mCamera!!.parameters.supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
-        {
+        if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS) && mCamera!!.parameters.supportedFocusModes.contains(
+                Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE
+            )
+        ) {
             param?.focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE
             Log.i(TAG, "enabling autofocus")
         } else {
@@ -235,7 +246,7 @@ class ScanPresenter constructor(
             var useRatio = 0.0
             val widthRatio: Double = ScanConstants.MAX_SIZE.width / copiedSize.width
             val heightRatio: Double = ScanConstants.MAX_SIZE.height / copiedSize.height
-            useRatio = if(widthRatio > heightRatio)  widthRatio else heightRatio
+            useRatio = if (widthRatio > heightRatio) widthRatio else heightRatio
             val resizedImage = Mat()
             val newSize = Size(copiedSize.width * useRatio, copiedSize.height * useRatio)
             Imgproc.resize(copied, resizedImage, newSize)
@@ -244,6 +255,7 @@ class ScanPresenter constructor(
             copied
         }
     }
+
     fun detectEdge(pic: Mat) {
         Log.i("height", pic.size().height.toString())
         Log.i("width", pic.size().width.toString())
@@ -338,7 +350,17 @@ class ScanPresenter constructor(
                     }.observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             iView.getPaperRect().onCornersDetected(it)
-                            shut()
+                            if (isAutoCapture) {
+                                // Delay 2s to avoid taking picture continuously
+                                Handler(Looper.getMainLooper()).postDelayed(
+                                    {
+                                        shut()
+                                    },
+                                    2000 // value in milliseconds
+                                )
+                            }
+
+
                         }, {
                             iView.getPaperRect().onCornersNotDetected()
                         })
@@ -403,5 +425,9 @@ class ScanPresenter constructor(
 
         // Then, get the largest output size that is smaller or equal than our max size
         return validSizes.first { it.long <= maxSize.long && it.short <= maxSize.short }.size
+    }
+
+    fun toggleAutoCapture() {
+        isAutoCapture = !isAutoCapture
     }
 }

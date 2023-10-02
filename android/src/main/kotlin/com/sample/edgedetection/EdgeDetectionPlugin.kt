@@ -3,6 +3,8 @@ package com.sample.edgedetection
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import com.google.gson.Gson
 import com.sample.edgedetection.scan.ScanActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
@@ -42,6 +44,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     private var methodCall: MethodCall? = null
 
     companion object {
+        const val CROP_INDEX: String = "crop_index"
         const val INITIAL_BUNDLE = "initial_bundle"
         const val FROM_GALLERY = "from_gallery"
         const val SAVE_TO = "save_to"
@@ -67,12 +70,15 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
                 )
                 return
             }
+
             call.method.equals("edge_detect") -> {
                 openCameraActivity(call, result)
             }
+
             call.method.equals("edge_detect_gallery") -> {
                 openGalleryActivity(call, result)
             }
+
             else -> {
                 result.notImplemented()
             }
@@ -84,16 +90,25 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        Log.i(
+            "HUNG_DEV",
+            "onActivityResult: " + requestCode + " " + resultCode + " " + data?.getStringExtra("RESULT")
+        )
         if (requestCode == REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     finishWithSuccess(true)
                 }
+
                 Activity.RESULT_CANCELED -> {
                     finishWithSuccess(false)
                 }
+
                 ERROR_CODE -> {
-                    finishWithError(ERROR_CODE.toString(), data?.getStringExtra("RESULT") ?: "ERROR")
+                    finishWithError(
+                        ERROR_CODE.toString(),
+                        data?.getStringExtra("RESULT") ?: "ERROR"
+                    )
                 }
             }
             return true
@@ -102,18 +117,25 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     }
 
     private fun openCameraActivity(call: MethodCall, result: Result) {
+        // Clear all images
+        SourceManager.clearImages()
+
         if (!setPendingMethodCallAndResult(call, result)) {
             finishWithAlreadyActiveError()
             return
         }
 
-        val initialIntent =Intent(Intent(getActivity()?.applicationContext, ScanActivity::class.java))
+        val initialIntent =
+            Intent(Intent(getActivity()?.applicationContext, ScanActivity::class.java))
 
         val bundle = Bundle()
         bundle.putString(SAVE_TO, call.argument<String>(SAVE_TO) as String)
         bundle.putString(SCAN_TITLE, call.argument<String>(SCAN_TITLE) as String)
         bundle.putString(CROP_TITLE, call.argument<String>(CROP_TITLE) as String)
-        bundle.putString(CROP_BLACK_WHITE_TITLE, call.argument<String>(CROP_BLACK_WHITE_TITLE) as String)
+        bundle.putString(
+            CROP_BLACK_WHITE_TITLE,
+            call.argument<String>(CROP_BLACK_WHITE_TITLE) as String
+        )
         bundle.putString(CROP_RESET_TITLE, call.argument<String>(CROP_RESET_TITLE) as String)
         bundle.putBoolean(CAN_USE_GALLERY, call.argument<Boolean>(CAN_USE_GALLERY) as Boolean)
 
@@ -127,12 +149,16 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
             finishWithAlreadyActiveError()
             return
         }
-        val initialIntent = Intent(Intent(getActivity()?.applicationContext, ScanActivity::class.java))
+        val initialIntent =
+            Intent(Intent(getActivity()?.applicationContext, ScanActivity::class.java))
 
         val bundle = Bundle()
         bundle.putString(SAVE_TO, call.argument<String>(SAVE_TO) as String)
         bundle.putString(CROP_TITLE, call.argument<String>(CROP_TITLE) as String)
-        bundle.putString(CROP_BLACK_WHITE_TITLE, call.argument<String>(CROP_BLACK_WHITE_TITLE) as String )
+        bundle.putString(
+            CROP_BLACK_WHITE_TITLE,
+            call.argument<String>(CROP_BLACK_WHITE_TITLE) as String
+        )
         bundle.putString(CROP_RESET_TITLE, call.argument<String>(CROP_RESET_TITLE) as String)
         bundle.putBoolean(FROM_GALLERY, call.argument<Boolean>(FROM_GALLERY) as Boolean)
 
@@ -163,7 +189,12 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     }
 
     private fun finishWithSuccess(res: Boolean) {
-        result?.success(res)
+
+        val paths = SourceManager.images.map { it.path }
+        // Convert to json String
+        val gson = Gson()
+        val jsonString = gson.toJson(paths)
+        result?.success(jsonString)
         clearMethodCallAndResult()
     }
 
