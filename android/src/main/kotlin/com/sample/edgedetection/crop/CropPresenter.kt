@@ -167,20 +167,15 @@ class CropPresenter(
         // Create image path by current system milliseconds and jpeg fomat:  "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
         val imageFilePath = "$path/${(System.currentTimeMillis() / 1000)}.jpeg"
 
-        Log.i("HUNG_DEVxx", "save: $imageFilePath")
-
         val imageModel = ImageModel(
             pic = picture, corners = corners, croppedBitmap = croppedBitmap, path = imageFilePath
         )
-        Log.i("HUNG_DEVxx", "save: $cropIndex")
 
         if (cropIndex != -1) {
-            Log.i("HUNG_DEVxx", "save: #1")
             SourceManager.images[cropIndex] = imageModel
             onSaveSuccess()
             return
         }
-        Log.i("HUNG_DEVxx", "save: #2")
         SourceManager.addImage(imageModel)
         onSaveSuccess()
         return

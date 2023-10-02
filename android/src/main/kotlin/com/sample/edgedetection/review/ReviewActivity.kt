@@ -130,7 +130,6 @@ class ReviewActivity : BaseActivity() {
             SourceManager.corners = SourceManager.images[currentIndex].corners
             val cropIntent = Intent(this, CropActivity::class.java)
             cropIntent.putExtra(EdgeDetectionHandler.INITIAL_BUNDLE, this.initialBundle)
-            Log.i("HUNG_DEVxx", "prepare: $currentIndex")
             cropIntent.putExtra(EdgeDetectionHandler.CROP_INDEX, currentIndex)
             startActivityForResult(cropIntent, CROP_REQUEST_CODE)
         }
@@ -154,7 +153,6 @@ class ReviewActivity : BaseActivity() {
 
     private fun saveAllImages() {
         SourceManager.images.forEachIndexed { index, imageModel ->
-            Log.i("HUNG_DEVxx", "saveAllImages: $index")
             val file = imageModel.path?.let { File(it) }
             val cropPic = imageModel.croppedBitmap
             if (null != cropPic) {
@@ -168,7 +166,6 @@ class ReviewActivity : BaseActivity() {
         }
         setResult(RESULT_OK)
         finish()
-        Log.i("HUNG_DEVxx", "saveAllImages: DONE")
     }
 
     private fun Bitmap.rotateInt(degree: Int): Bitmap {
@@ -195,7 +192,6 @@ class ReviewActivity : BaseActivity() {
         if (requestCode == CROP_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 val updatedIndex = data?.getIntExtra(EdgeDetectionHandler.CROP_INDEX, -1) ?: -1
-                Log.i("HUNG_DEVxx", "onActivityResult: $updatedIndex")
                 changeImageSelected(updatedIndex)
                 return
             }

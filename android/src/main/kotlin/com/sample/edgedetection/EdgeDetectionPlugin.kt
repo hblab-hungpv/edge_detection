@@ -90,10 +90,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        Log.i(
-            "HUNG_DEV",
-            "onActivityResult: " + requestCode + " " + resultCode + " " + data?.getStringExtra("RESULT")
-        )
+
         if (requestCode == REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -194,7 +191,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
         // Convert to json String
         val gson = Gson()
         val jsonString = gson.toJson(paths)
-        result?.success(jsonString)
+        result?.success(if(paths.isNotEmpty()) jsonString else '')
         clearMethodCallAndResult()
     }
 

@@ -214,13 +214,9 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.i("HUNG_DEV", "onActivityResult #0: " + requestCode + " " + resultCode)
-        Log.i("HUNG_DEV", "REQUEST_CODE : " + REQUEST_CODE)
 
         if (requestCode == REQUEST_CODE) {
-            Log.i("HUNG_DEV", "onActivityResult: #1")
             if (resultCode == Activity.RESULT_OK) {
-                Log.i("HUNG_DEV", "onActivityResult: #2")
 
                 setResult(Activity.RESULT_OK)
                 finish()
@@ -233,7 +229,6 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         }
 
         if (requestCode == 1) {
-            Log.i("HUNG_DEV", "onActivityResult: #3")
             if (resultCode == Activity.RESULT_OK) {
                 val uri: Uri = data!!.data!!
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
