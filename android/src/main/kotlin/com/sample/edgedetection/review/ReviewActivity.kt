@@ -20,31 +20,33 @@ import com.sample.edgedetection.R
 import com.sample.edgedetection.SourceManager
 import com.sample.edgedetection.base.BaseActivity
 import com.sample.edgedetection.crop.CropActivity
+import com.sample.edgedetection.scan.ScanActivity
 import java.io.File
 import java.io.FileOutputStream
+import android.widget.RelativeLayout
+
 
 class ReviewActivity : BaseActivity() {
 
-    lateinit var paper: ImageView
+    private lateinit var paper: ImageView
 
-    lateinit var previousImage: ImageView
+    private lateinit var previousImage: ImageView
 
-    lateinit var nextImage: ImageView
+    private lateinit var nextImage: ImageView
 
-    lateinit var currentPage: TextView
+    private lateinit var currentPage: TextView
 
-    lateinit var deleteButton: View
+    private lateinit var deleteButton: View
 
-    lateinit var cropButton: View
+    private lateinit var cropButton: View
 
-    lateinit var rotateButton: View
+    private lateinit var rotateButton: View
 
-    lateinit var rcImages: RecyclerView
+    private lateinit var rcImages: RecyclerView
 
-    lateinit var saveDraft: View
+    private lateinit var saveDraft: View
 
-    lateinit var submitButton: Button
-
+    private lateinit var submitButton: Button
 
     private var currentIndex = 0
 
@@ -85,6 +87,13 @@ class ReviewActivity : BaseActivity() {
         adapter = ImageAdapter(object : ImageAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 changeImageSelected(position)
+            }
+
+            override fun onAddButtonClick() {
+                // To home activity
+                val intent = Intent(this@ReviewActivity, ScanActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         })
 
@@ -212,6 +221,7 @@ class ReviewActivity : BaseActivity() {
 
     private fun updateImages() {
         rcImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rcImages.setNestedScrollingEnabled(true);
 
         rcImages.adapter = adapter
     }
@@ -234,17 +244,28 @@ class ImageAdapter(private var onItemClick: OnItemClickListener) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+
+        if (viewType == R.layout.item_add_image_button) {
+            return ImageViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_add_image_button, parent, false)
+            )
+        }
         return ImageViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
         )
     }
 
     override fun getItemCount(): Int {
-        return SourceManager.images.size
+        return SourceManager.images.size + 1
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(SourceManager.images[position])
+        if (position == SourceManager.images.size) {
+            holder.bind()
+        } else {
+            holder.bind(SourceManager.images[position])
+        }
     }
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -265,10 +286,22 @@ class ImageAdapter(private var onItemClick: OnItemClickListener) :
                 onItemClick.onItemClick(adapterPosition)
             }
         }
+
+        fun bind() {
+            val addImageButton = itemView.findViewById<RelativeLayout>(R.id.add_image)
+            addImageButton.setOnClickListener {
+                onItemClick.onAddButtonClick()
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == SourceManager.images.size) R.layout.item_add_image_button else R.layout.item_image
     }
 
     // Create interface to handle click event
     interface OnItemClickListener {
         fun onItemClick(position: Int)
+        fun onAddButtonClick()
     }
 }

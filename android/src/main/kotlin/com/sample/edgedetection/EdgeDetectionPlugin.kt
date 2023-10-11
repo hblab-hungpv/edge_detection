@@ -191,7 +191,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
         // Convert to json String
         val gson = Gson()
         val jsonString = gson.toJson(paths)
-        result?.success(if(paths.isNotEmpty()) jsonString else '')
+        result?.success(jsonString)
         clearMethodCallAndResult()
     }
 

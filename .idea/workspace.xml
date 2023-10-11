@@ -5,12 +5,135 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f08b3923-f33b-4d39-b5f6-cea7d389432e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/android/src/main/res/drawable/baseline_add_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/src/main/res/drawable/dash_line.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/src/main/res/layout/item_add_image_button.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/add.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/add.imageset/add.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/add.imageset/add@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/add.imageset/add@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScan.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScan.imageset/autoScan.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScan.imageset/autoScan@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScan.imageset/autoScan@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScanOff.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScanOff.imageset/autoScanOff.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScanOff.imageset/autoScanOff@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/autoScanOff.imageset/autoScanOff@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/close.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/close.imageset/close.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/close.imageset/close@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/close.imageset/close@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/crop.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/crop.imageset/crop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/crop.imageset/crop@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/crop.imageset/crop@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/delete.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/delete.imageset/delete.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/delete.imageset/delete@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/delete.imageset/delete@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/done.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/done.imageset/done.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/done.imageset/done@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/done.imageset/done@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOff.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOff.imageset/flashOff.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOff.imageset/flashOff@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOff.imageset/flashOff@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOn.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOn.imageset/flashOn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOn.imageset/flashOn@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/flashOn.imageset/flashOn@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/next.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/next.imageset/next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/next.imageset/next@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/next.imageset/next@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/previous.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/previous.imageset/previous.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/previous.imageset/previous@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/previous.imageset/previous@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/rotate.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/rotate.imageset/rotate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/rotate.imageset/rotate@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/rotate.imageset/rotate@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/add.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/add.imageset/add.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/add.imageset/add@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/add.imageset/add@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScan.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScan.imageset/autoScan.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScan.imageset/autoScan@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScan.imageset/autoScan@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScanOff.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScanOff.imageset/autoScanOff.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScanOff.imageset/autoScanOff@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/autoScanOff.imageset/autoScanOff@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/close.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/close.imageset/close.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/close.imageset/close@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/close.imageset/close@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/crop.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/crop.imageset/crop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/crop.imageset/crop@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/crop.imageset/crop@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/delete.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/delete.imageset/delete.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/delete.imageset/delete@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/delete.imageset/delete@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/done.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/done.imageset/done.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/done.imageset/done@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/done.imageset/done@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOff.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOff.imageset/flashOff.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOff.imageset/flashOff@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOff.imageset/flashOff@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOn.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOn.imageset/flashOn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOn.imageset/flashOn@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/flashOn.imageset/flashOn@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/next.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/next.imageset/next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/next.imageset/next@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/next.imageset/next@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/previous.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/previous.imageset/previous.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/previous.imageset/previous@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/previous.imageset/previous@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/rotate.imageset/Contents.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/rotate.imageset/rotate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/rotate.imageset/rotate@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/rotate.imageset/rotate@3x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Confirmation/ConfirmationViewController.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/DataScan.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/DataSource.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Extensions/UIColor.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Resources/Assets/close.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Resources/Assets/close@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Resources/Assets/close@3x.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/EdgeDetectionPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/EdgeDetectionPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropPresenter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropPresenter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/review/ReviewActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/review/ReviewActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/scan/ScanActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/scan/ScanActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/res/layout/activity_review.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/res/layout/activity_review.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/res/layout/item_image.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/res/layout/item_image.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Base.lproj/Main.storyboard" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Base.lproj/Main.storyboard" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/HomeViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/HomeViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/ScanPhotoViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/ScanPhotoViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScan.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScan.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/Assets.xcassets/Contents.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/HomeViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Example/WeScanSampleProject/HomeViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Edit/EditImageViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Edit/EditImageViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Edit/EditScanViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Edit/EditScanViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/ImageScannerController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/ImageScannerController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Review/ReviewViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Review/ReviewViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Scan/ScannerViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Scan/ScannerViewController.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Session/CaptureSession.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Session/CaptureSession.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +211,11 @@
           <url>file://$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropActivity.kt</url>
           <line>50</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
+          <line>58</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

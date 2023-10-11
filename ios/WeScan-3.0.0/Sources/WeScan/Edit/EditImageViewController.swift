@@ -28,6 +28,18 @@ public final class EditImageViewController: UIViewController {
     private var quadViewWidthConstraint = NSLayoutConstraint()
     private var quadViewHeightConstraint = NSLayoutConstraint()
     public weak var delegate: EditImageViewDelegate?
+    
+    private lazy var footerContainer: UIView = {
+        let footerContainer = UIView()
+        footerContainer.translatesAutoresizingMaskIntoConstraints = false
+        return footerContainer
+    }()
+    
+    private lazy var contentContainer: UIView = {
+        let contentContainer = UIView()
+        contentContainer.translatesAutoresizingMaskIntoConstraints = false
+        return contentContainer
+    }()
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()

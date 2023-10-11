@@ -14,6 +14,11 @@ class HomeViewController: UIViewController, ImageScannerControllerDelegate {
         if self.isBeingPresented {
             cameraController = ImageScannerController()
             cameraController.imageScannerDelegate = self
+            cameraController.modalPresentationStyle = .fullScreen
+            
+            
+            DataSource.clearAll()
+    
 
             if #available(iOS 13.0, *) {
                 cameraController.isModalInPresentation = true
@@ -40,8 +45,8 @@ class HomeViewController: UIViewController, ImageScannerControllerDelegate {
             
             present(cameraController, animated: true) {
                 if let window = UIApplication.shared.keyWindow {
-                    window.addSubview(self.selectPhotoButton)
-                    self.setupConstraints()
+//                    window.addSubview(self.selectPhotoButton)
+//                    self.setupConstraints()
                 }
             }
         }
@@ -66,7 +71,7 @@ class HomeViewController: UIViewController, ImageScannerControllerDelegate {
     @objc private func cancelImageScannerController() {
         hideButtons()
         
-        _result!(false)
+        _result!("")
         cameraController?.dismiss(animated: true)
         dismiss(animated: true)
     }
@@ -119,18 +124,27 @@ class HomeViewController: UIViewController, ImageScannerControllerDelegate {
     
     func imageScannerController(_ scanner: ImageScannerController, didFailWithError error: Error) {
         print(error)
-        _result!(false)
+        _result!("")
         self.hideButtons()
         self.dismiss(animated: true)
     }
     
-    func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: ImageScannerResults) {
+    func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: [DataScan]) {
         // Your ViewController is responsible for dismissing the ImageScannerController
         scanner.dismiss(animated: true)
         self.hideButtons()
         
-        saveImage(image:results.doesUserPreferEnhancedScan ? results.enhancedScan!.image : results.croppedScan.image)
-        _result!(true)
+        // Save list image from data source
+        var listImage: [String] = []
+        
+        for data in DataSource.images {
+            let path = saveImage(image: data.croppedScan.image)
+            listImage.append(path ?? "")
+        }
+        
+        let jsonString: String? = convertToJsonString(data: listImage)
+        
+        _result!(jsonString ?? "")
         self.dismiss(animated: true)
     }
     
@@ -139,17 +153,23 @@ class HomeViewController: UIViewController, ImageScannerControllerDelegate {
         scanner.dismiss(animated: true)
         self.hideButtons()
         
-        _result!(false)
+        _result!("")
         self.dismiss(animated: true)
     }
     
-    func saveImage(image: UIImage) -> Bool? {
+    func saveImage(image: UIImage) -> String? {
         
         guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
-            return false
+            return ""
         }
         
-        let path : String = "file://" + self.saveTo.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)!
+        // Create file name by time current milliseconds end with .jpeg
+        let fileName = String(Int64(Date().timeIntervalSince1970 * 1000)) + ".jpeg"
+        
+        // Create path to save image
+        let initPath = self.saveTo + "/" + fileName
+        
+        let path : String = "file://" + initPath.addingPercentEncoding(withAllowedCharacters:NSCharacterSet.urlQueryAllowed)!
         let filePath: URL = URL.init(string: path)!
         
         do {
@@ -169,13 +189,27 @@ class HomeViewController: UIViewController, ImageScannerControllerDelegate {
         
         do {
             try data.write(to: filePath)
-            return true
+            return initPath
         }
         
         catch {
             print(error.localizedDescription)
-            return false
+            return ""
         }
     }
+    
+    // Convert to json string
+    func convertToJsonString(data: [String]) -> String? {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            return jsonString
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    
 }
 

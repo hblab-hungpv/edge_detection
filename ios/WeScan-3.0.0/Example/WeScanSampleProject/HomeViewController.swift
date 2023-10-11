@@ -134,8 +134,10 @@ final class HomeViewController: UIViewController {
     }
 
     func scanImage() {
+        DataSource.clearAll()
         let scannerViewController = ImageScannerController(delegate: self)
         scannerViewController.modalPresentationStyle = .fullScreen
+        scannerViewController.setParam(isClearAll: true)
 
         if #available(iOS 13.0, *) {
             scannerViewController.navigationBar.tintColor = .label
@@ -160,12 +162,14 @@ extension HomeViewController: ImageScannerControllerDelegate {
         assertionFailure("Error occurred: \(error)")
     }
 
-    func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: ImageScannerResults) {
+    func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: [DataScan]) {
         scanner.dismiss(animated: true, completion: nil)
+        print(DataSource.images.count)
     }
 
     func imageScannerControllerDidCancel(_ scanner: ImageScannerController) {
         scanner.dismiss(animated: true, completion: nil)
+        
     }
 
 }

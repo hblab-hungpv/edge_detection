@@ -37,9 +37,11 @@ class _MyAppState extends State<MyApp> {
     }
 
     // Generate filepath for saving
-    String imagePath = join((await getApplicationSupportDirectory()).path,
-        "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
-      
+    String imagePath = join((await getApplicationSupportDirectory()).path, "");
+
+    // String imagePath = join((await getApplicationSupportDirectory()).path,
+    //     "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+
     bool success = false;
 
     try {
@@ -52,11 +54,13 @@ class _MyAppState extends State<MyApp> {
         androidCropBlackWhiteTitle: 'Black White',
         androidCropReset: 'Reset',
       );
-      print("xxxxxx: $path");
+      // print("xxxxxx: $path");
 
       final List<String> images = ImageDetected().imageDetectedFromJson(path);
 
       setState(() {
+        // replace file:// with empty string if IOS platform
+        // _imagePath = images[0].replaceAll('file://', '');
         _imagePath = images[0];
       });
     } catch (e) {
@@ -94,7 +98,7 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      if(success){
+      if (success) {
         _imagePath = imagePath;
       }
     });

@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="14dp">
 
-
     <ImageView
         android:id="@+id/imagePreview"
         android:layout_width="48dp"
@@ -15,6 +14,5 @@
         android:clipToOutline="true"
         android:scaleType="fitXY"
         android:src="@drawable/image_unselected_bg" />
-
 
 </LinearLayout>

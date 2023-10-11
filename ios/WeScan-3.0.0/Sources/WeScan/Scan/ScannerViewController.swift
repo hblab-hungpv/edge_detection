@@ -27,7 +27,20 @@ public final class ScannerViewController: UIViewController {
 
     /// The original bar style that was set by the host app
     private var originalBarStyle: UIBarStyle?
-
+    
+    private let screenHeight = UIScreen.main.bounds.height
+    
+    private var footerHeight = CGFloat(100)
+    
+    private lazy var footerContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        // Transparent background
+        view.backgroundColor = UIColor.black.withAlphaComponent(0)
+        
+        return view
+    }()
+    
     private lazy var shutterButton: ShutterButton = {
         let button = ShutterButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -35,24 +48,25 @@ public final class ScannerViewController: UIViewController {
         return button
     }()
 
-    private lazy var cancelButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(NSLocalizedString("wescan.scanning.cancel", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Cancel", comment: "The cancel button"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(cancelImageScannerController), for: .touchUpInside)
+    private lazy var cancelButton: UIBarButtonItem = {
+       let image = UIImage(named: "close")
+
+        let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelImageScannerController))
         return button
     }()
 
     private lazy var autoScanButton: UIBarButtonItem = {
-        let title = NSLocalizedString("wescan.scanning.auto", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Auto", comment: "The auto button state")
-        let button = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(toggleAutoScan))
+        
+        let image = UIImage(named: "autoScanOff")
+        
+        let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(toggleAutoScan))
         button.tintColor = .white
 
         return button
     }()
 
     private lazy var flashButton: UIBarButtonItem = {
-        let image = UIImage(systemName: "bolt.fill", named: "flash", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
+        let image = UIImage(named: "flashOff")
         let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(toggleFlash))
         button.tintColor = .white
 
@@ -65,11 +79,55 @@ public final class ScannerViewController: UIViewController {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
     }()
+    
+    private lazy var previewImageContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+    
+        let tap = UITapGestureRecognizer(target: self, action: #selector(previewImageTapped))
+        view.addGestureRecognizer(tap)
+        
+        return view
+    }()
+    
+    private lazy var previewImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius = 4
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .black
+        return imageView
+    }()
+    
+    private lazy var countLabelView: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.text = "1"
+        return label
+    }()
+    
+    private lazy var circleLabelCountContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .red
+        view.layer.cornerRadius = 10
+        view.clipsToBounds = true
+        return view
+    }()
+    
 
     // MARK: - Life Cycle
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set footer height
+        footerHeight = screenHeight / 4
 
         title = nil
         view.backgroundColor = UIColor.black
@@ -83,6 +141,28 @@ public final class ScannerViewController: UIViewController {
         originalBarStyle = navigationController?.navigationBar.barStyle
 
         NotificationCenter.default.addObserver(self, selector: #selector(subjectAreaDidChange), name: Notification.Name.AVCaptureDeviceSubjectAreaDidChange, object: nil)
+        
+        // Visibility of preview image container
+        previewImageContainer.isHidden = DataSource.images.isEmpty
+        
+        // Update image preview & count label
+        if(!DataSource.images.isEmpty){
+            previewImageView.image = DataSource.images[0].croppedScan.image
+            countLabelView.text = "\(DataSource.images.count)"
+        }
+        
+        // Update auto scan button
+        updateAutoScanButton()
+        
+        
+    }
+    
+    private func updateAutoScanButton() {
+        
+        let image = CaptureSession.current.isAutoScanEnabled ? UIImage(named: "autoScan") : UIImage(named: "autoScanOff")
+        
+        autoScanButton.image = image
+        autoScanButton.tintColor = CaptureSession.current.isAutoScanEnabled ? .green : .white
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -95,13 +175,20 @@ public final class ScannerViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
 
         navigationController?.navigationBar.barStyle = .blackTranslucent
+        
+        // Show navigation bar
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
+        // Calculate the frame for the videoPreviewLayer
+        
         videoPreviewLayer.frame = view.layer.bounds
+    
     }
+    
 
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -124,27 +211,60 @@ public final class ScannerViewController: UIViewController {
         quadView.translatesAutoresizingMaskIntoConstraints = false
         quadView.editable = false
         view.addSubview(quadView)
-        view.addSubview(cancelButton)
-        view.addSubview(shutterButton)
+        view.addSubview(footerContainer)
+        footerContainer.addSubview(shutterButton)
         view.addSubview(activityIndicator)
+        view.addSubview(previewImageContainer)
+        
+        previewImageContainer.addSubview(previewImageView)
+        previewImageContainer.addSubview(circleLabelCountContainer)
+        circleLabelCountContainer.addSubview(countLabelView)
     }
 
     private func setupNavigationBar() {
-        navigationItem.setLeftBarButton(flashButton, animated: false)
-        navigationItem.setRightBarButton(autoScanButton, animated: false)
+        // Close button
+        navigationItem.setLeftBarButton(cancelButton, animated: false)
+        
+        // Setup title
+        let title = NSLocalizedString("wescan.scanning.title", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Camera", comment: "The title of the scanner view controller")
+        
+        navigationItem.title = title
+        
+        let rightItems = [flashButton, autoScanButton]
+        navigationItem.setRightBarButtonItems(rightItems, animated: false)
 
         if UIImagePickerController.isFlashAvailable(for: .rear) == false {
-            let flashOffImage = UIImage(systemName: "bolt.slash.fill", named: "flashUnavailable", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
+            let flashOffImage = UIImage(named: "flashOff")
             flashButton.image = flashOffImage
             flashButton.tintColor = UIColor.lightGray
         }
     }
 
     private func setupConstraints() {
+        var footerContainerConstraints = [NSLayoutConstraint]()
         var quadViewConstraints = [NSLayoutConstraint]()
-        var cancelButtonConstraints = [NSLayoutConstraint]()
         var shutterButtonConstraints = [NSLayoutConstraint]()
         var activityIndicatorConstraints = [NSLayoutConstraint]()
+        
+        footerContainerConstraints = [
+            footerContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            footerContainer.heightAnchor.constraint(equalToConstant: footerHeight)
+        ]
+        
+        NSLayoutConstraint.activate(footerContainerConstraints)
+
+        // Add shutter button in center of footer container
+        shutterButtonConstraints = [
+            shutterButton.centerXAnchor.constraint(equalTo: footerContainer.centerXAnchor),
+            shutterButton.centerYAnchor.constraint(equalTo: footerContainer.centerYAnchor),
+            shutterButton.widthAnchor.constraint(equalToConstant: 65.0),
+            shutterButton.heightAnchor.constraint(equalToConstant: 65.0)
+        ]
+        
+        NSLayoutConstraint.activate(shutterButtonConstraints)
+    
 
         quadViewConstraints = [
             quadView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -153,36 +273,65 @@ public final class ScannerViewController: UIViewController {
             quadView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         ]
 
-        shutterButtonConstraints = [
-            shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            shutterButton.widthAnchor.constraint(equalToConstant: 65.0),
-            shutterButton.heightAnchor.constraint(equalToConstant: 65.0)
-        ]
-
         activityIndicatorConstraints = [
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
 
         if #available(iOS 11.0, *) {
-            cancelButtonConstraints = [
-                cancelButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 24.0),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
-            ]
-
             let shutterButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor, constant: 8.0)
             shutterButtonConstraints.append(shutterButtonBottomConstraint)
         } else {
-            cancelButtonConstraints = [
-                cancelButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24.0),
-                view.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: (65.0 / 2) - 10.0)
-            ]
-
             let shutterButtonBottomConstraint = view.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor, constant: 8.0)
             shutterButtonConstraints.append(shutterButtonBottomConstraint)
         }
 
-        NSLayoutConstraint.activate(quadViewConstraints + cancelButtonConstraints + shutterButtonConstraints + activityIndicatorConstraints)
+        NSLayoutConstraint.activate(quadViewConstraints + activityIndicatorConstraints)
+        
+        // Configure preview image container
+        let previewImageContainerConstraints = [
+            previewImageContainer.centerYAnchor.constraint(equalTo: footerContainer.centerYAnchor),
+       
+            previewImageContainer.trailingAnchor.constraint(equalTo: footerContainer.trailingAnchor, constant: -16.0),
+            previewImageContainer.heightAnchor.constraint(equalToConstant: 72.0),
+            previewImageContainer.widthAnchor.constraint(equalToConstant: 57.0)
+        
+        ]
+        
+        NSLayoutConstraint.activate(previewImageContainerConstraints)
+        
+        // Configure preview image view
+        let previewImageViewConstraints = [
+            previewImageView.topAnchor.constraint(equalTo: previewImageContainer.topAnchor, constant: 7.0),
+            previewImageView.leadingAnchor.constraint(equalTo: previewImageContainer.leadingAnchor),
+            previewImageView.trailingAnchor.constraint(equalTo: previewImageContainer.trailingAnchor, constant: -7.0),
+            previewImageView.bottomAnchor.constraint(equalTo: previewImageContainer.bottomAnchor),
+            previewImageView.widthAnchor.constraint(equalToConstant: 50.0),
+            previewImageView.heightAnchor.constraint(equalToConstant: 65.0)
+        
+        ]
+        
+        NSLayoutConstraint.activate(previewImageViewConstraints)
+        
+        // Configure count label container top left of preview image container
+        let circleLabelCountContainerConstraints = [
+            circleLabelCountContainer.topAnchor.constraint(equalTo: previewImageContainer.topAnchor),
+            circleLabelCountContainer.trailingAnchor.constraint(equalTo: previewImageContainer.trailingAnchor),
+            circleLabelCountContainer.widthAnchor.constraint(equalToConstant: 20.0),
+            circleLabelCountContainer.heightAnchor.constraint(equalToConstant: 20.0)
+        ]
+        
+        NSLayoutConstraint.activate(circleLabelCountContainerConstraints)
+        
+        // Config count label
+        let countLabelViewConstraints = [
+            // Center label in container
+            countLabelView.centerXAnchor.constraint(equalTo: circleLabelCountContainer.centerXAnchor),
+            countLabelView.centerYAnchor.constraint(equalTo: circleLabelCountContainer.centerYAnchor),
+        ]
+        
+        NSLayoutConstraint.activate(countLabelViewConstraints)
+        
     }
 
     // MARK: - Tap to Focus
@@ -236,27 +385,31 @@ public final class ScannerViewController: UIViewController {
     @objc private func toggleAutoScan() {
         if CaptureSession.current.isAutoScanEnabled {
             CaptureSession.current.isAutoScanEnabled = false
-            autoScanButton.title = NSLocalizedString("wescan.scanning.manual", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Manual", comment: "The manual button state")
+            let autoScanOffImage = UIImage(named: "autoScanOff")
+            autoScanButton.image = autoScanOffImage
+            autoScanButton.tintColor = .white
         } else {
             CaptureSession.current.isAutoScanEnabled = true
-            autoScanButton.title = NSLocalizedString("wescan.scanning.auto", tableName: nil, bundle: Bundle(for: ScannerViewController.self), value: "Auto", comment: "The auto button state")
+            let autoScanOnImage = UIImage(named: "autoScan")
+            autoScanButton.image = autoScanOnImage
+            autoScanButton.tintColor = .green
         }
     }
 
     @objc private func toggleFlash() {
         let state = CaptureSession.current.toggleFlash()
 
-        let flashImage = UIImage(systemName: "bolt.fill", named: "flash", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
-        let flashOffImage = UIImage(systemName: "bolt.slash.fill", named: "flashUnavailable", in: Bundle(for: ScannerViewController.self), compatibleWith: nil)
+        let flashImage = UIImage(named: "flashOn")
+        let flashOffImage = UIImage(named: "flashOff")
 
         switch state {
         case .on:
             flashEnabled = true
             flashButton.image = flashImage
-            flashButton.tintColor = .yellow
+            flashButton.tintColor = .white
         case .off:
             flashEnabled = false
-            flashButton.image = flashImage
+            flashButton.image = flashOffImage
             flashButton.tintColor = .white
         case .unknown, .unavailable:
             flashEnabled = false
@@ -269,6 +422,17 @@ public final class ScannerViewController: UIViewController {
         guard let imageScannerController = navigationController as? ImageScannerController else { return }
         imageScannerController.imageScannerDelegate?.imageScannerControllerDidCancel(imageScannerController)
     }
+    
+    // previewImageTapped
+    @objc private func previewImageTapped() {
+        if(DataSource.images.isEmpty){
+            return
+        }
+        
+        let confirmationVC = ConfirmationViewController(activeIndex: -1)
+        self.navigationController?.pushViewController(confirmationVC, animated: true)
+    }
+    
 
 }
 

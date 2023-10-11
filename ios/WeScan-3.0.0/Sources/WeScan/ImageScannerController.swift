@@ -18,7 +18,7 @@ public protocol ImageScannerControllerDelegate: NSObjectProtocol {
     ///   - scanner: The scanner controller object managing the scanning interface.
     ///   - results: The results of the user scanning with the camera.
     /// - Discussion: Your delegate's implementation of this method should dismiss the image scanner controller.
-    func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: ImageScannerResults)
+    func imageScannerController(_ scanner: ImageScannerController, didFinishScanningWithResults results: [DataScan])
 
     /// Tells the delegate that the user cancelled the scan operation.
     ///
@@ -44,6 +44,12 @@ public final class ImageScannerController: UINavigationController {
 
     /// The object that acts as the delegate of the `ImageScannerController`.
     public weak var imageScannerDelegate: ImageScannerControllerDelegate?
+    
+    var isClearAll = false
+    
+    public func setParam(isClearAll: Bool) {
+        self.isClearAll = isClearAll
+    }
 
     // MARK: - Life Cycle
 
@@ -64,6 +70,10 @@ public final class ImageScannerController: UINavigationController {
         super.init(rootViewController: ScannerViewController())
 
         self.imageScannerDelegate = delegate
+        
+        if(isClearAll){
+            DataSource.clearAll()
+        }
 
         if #available(iOS 13.0, *) {
             navigationBar.tintColor = .label
