@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class DataSource {
+public final class DataSource {
     
     // Create list data scan list
     static public var images: [DataScan] = []

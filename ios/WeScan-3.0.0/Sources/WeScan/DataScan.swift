@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DataScan {
+public final struct DataScan {
     /// The original scan taken by the user, prior to the cropping applied by WeScan.
     public var originalScan: ImageScannerScan
 
