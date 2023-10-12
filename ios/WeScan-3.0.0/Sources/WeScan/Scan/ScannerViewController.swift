@@ -154,7 +154,6 @@ public final class ScannerViewController: UIViewController {
         // Update auto scan button
         updateAutoScanButton()
         
-        
     }
     
     private func updateAutoScanButton() {
@@ -377,6 +376,11 @@ public final class ScannerViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func captureImage(_ sender: UIButton) {
+        if(DataSource.images.count >= 10){
+            // Show Toast
+            showToast("You can't add more than 10 images")
+            return
+        }
         (navigationController as? ImageScannerController)?.flashToBlack()
         shutterButton.isUserInteractionEnabled = false
         captureSessionManager?.capturePhoto()

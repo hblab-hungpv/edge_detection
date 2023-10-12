@@ -116,6 +116,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     private fun openCameraActivity(call: MethodCall, result: Result) {
         // Clear all images
         SourceManager.clearImages()
+        SourceManager.canFinishSession = false
 
         if (!setPendingMethodCallAndResult(call, result)) {
             finishWithAlreadyActiveError()
@@ -186,11 +187,15 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
     }
 
     private fun finishWithSuccess(res: Boolean) {
-
-        val paths = SourceManager.images.map { it.path }
-        // Convert to json String
-        val gson = Gson()
-        val jsonString = gson.toJson(paths)
+        var jsonString = ""
+        if (!res) {
+            SourceManager.clearImages()
+        } else {
+            val paths = SourceManager.images.map { it.path }
+            // Convert to json String
+            val gson = Gson()
+            jsonString = gson.toJson(paths)
+        }
         result?.success(jsonString)
         clearMethodCallAndResult()
     }

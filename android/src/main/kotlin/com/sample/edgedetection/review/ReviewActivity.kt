@@ -24,6 +24,8 @@ import com.sample.edgedetection.scan.ScanActivity
 import java.io.File
 import java.io.FileOutputStream
 import android.widget.RelativeLayout
+import android.widget.Toast
+import com.sample.edgedetection.SourceManager.Companion.updateImage
 
 
 class ReviewActivity : BaseActivity() {
@@ -83,17 +85,29 @@ class ReviewActivity : BaseActivity() {
 
         this.initialBundle = intent.getBundleExtra(EdgeDetectionHandler.INITIAL_BUNDLE) as Bundle
 
-        currentIndex = 0
+        if(SourceManager.images.isNotEmpty()){
+            currentIndex = SourceManager.images.size - 1
+        }
+
         adapter = ImageAdapter(object : ImageAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 changeImageSelected(position)
             }
 
             override fun onAddButtonClick() {
-                // To home activity
-                val intent = Intent(this@ReviewActivity, ScanActivity::class.java)
-                startActivity(intent)
-                finish()
+                if (SourceManager.images.size < 10) {
+
+                    // To home activity
+                    val intent = Intent(this@ReviewActivity, ScanActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this@ReviewActivity,
+                        R.string.add_new_image_error,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
 
@@ -101,8 +115,7 @@ class ReviewActivity : BaseActivity() {
             if (currentIndex > 0) {
                 currentIndex--
                 changeImageSelected(currentIndex)
-            }
-            if (currentIndex == 0) {
+            } else {
                 currentIndex = SourceManager.images.size - 1
             }
 
@@ -114,8 +127,7 @@ class ReviewActivity : BaseActivity() {
             if (currentIndex < lastIndex) {
                 currentIndex++
 
-            }
-            if (currentIndex == lastIndex) {
+            } else {
                 currentIndex = 0
             }
 
@@ -140,6 +152,7 @@ class ReviewActivity : BaseActivity() {
             val cropIntent = Intent(this, CropActivity::class.java)
             cropIntent.putExtra(EdgeDetectionHandler.INITIAL_BUNDLE, this.initialBundle)
             cropIntent.putExtra(EdgeDetectionHandler.CROP_INDEX, currentIndex)
+            android.util.Log.i("HUNG_DEV", "prepare: $currentIndex")
             startActivityForResult(cropIntent, CROP_REQUEST_CODE)
         }
 
@@ -156,7 +169,7 @@ class ReviewActivity : BaseActivity() {
         }
 
         // Focus first image.
-        changeImageSelected(0)
+        changeImageSelected(currentIndex)
         updateImages()
     }
 
@@ -173,7 +186,9 @@ class ReviewActivity : BaseActivity() {
                 Log.i(com.sample.edgedetection.processor.TAG, "CroppedBitmap Saved")
             }
         }
+        SourceManager.canFinishSession = true
         setResult(RESULT_OK)
+        System.gc()
         finish()
     }
 
@@ -209,6 +224,7 @@ class ReviewActivity : BaseActivity() {
 
     private fun changeImageSelected(selectedIndex: Int) {
         currentIndex = selectedIndex
+        SourceManager.selectedIndex = selectedIndex
         updateImage()
 
         SourceManager.images.forEachIndexed { index, imageModel ->
@@ -235,6 +251,14 @@ class ReviewActivity : BaseActivity() {
 
         paper.setImageBitmap(image.croppedBitmap)
         currentPage.text = "${currentIndex + 1}/${SourceManager.images.size}"
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if(SourceManager.canFinishSession) {
+            finish()
+        }
     }
 
 }

@@ -2,6 +2,8 @@ package com.sample.edgedetection.crop
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.sample.edgedetection.EdgeDetectionHandler
 import com.sample.edgedetection.R
+import com.sample.edgedetection.REQUEST_CODE
 import com.sample.edgedetection.SourceManager
 import com.sample.edgedetection.base.BaseActivity
 import com.sample.edgedetection.review.ReviewActivity
@@ -50,6 +53,7 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
     override fun prepare() {
         this.initialBundle = intent.getBundleExtra(EdgeDetectionHandler.INITIAL_BUNDLE) as Bundle
         this.cropIndex = intent.getIntExtra(EdgeDetectionHandler.CROP_INDEX, -1)
+        android.util.Log.i("HUNG_DEV", "prepare: cropIndex: $cropIndex")
         this.title = initialBundle.getString(EdgeDetectionHandler.CROP_TITLE)
     }
 
@@ -107,7 +111,7 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
                 finish()
             }, 2000)*/
 
-            mPresenter.save(this.cropIndex, ::onSaveSuccess)
+            mPresenter.save(::onSaveSuccess)
 //            setResult(Activity.RESULT_OK)
 //            System.gc()
 //            finish()
@@ -119,6 +123,7 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
                 val reviewIntent = Intent(this, ReviewActivity::class.java)
                 reviewIntent.putExtra(EdgeDetectionHandler.INITIAL_BUNDLE, initialBundle)
                 startActivity(reviewIntent)
+                finish()
             }
         }
 
@@ -133,6 +138,9 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
             finish()
             return
         }
+        val reviewIntent = Intent(this, ReviewActivity::class.java)
+        reviewIntent.putExtra(EdgeDetectionHandler.INITIAL_BUNDLE, initialBundle)
+        startActivity(reviewIntent)
         finish()
     }
 
@@ -194,7 +202,7 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
             R.id.action_label -> {
                 Log.e(TAG, "Saved touched!")
                 item.isEnabled = false
-                mPresenter.save(this.cropIndex, ::onSaveSuccess)
+                mPresenter.save(::onSaveSuccess)
                 setResult(Activity.RESULT_OK)
                 System.gc()
                 finish()
@@ -231,7 +239,8 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
         }
         imagePreviewContainer.visibility = View.VISIBLE
         imageCount.text = "${images.size}"
-        imagePreview.setImageBitmap(images[0].croppedBitmap)
+        val lastIndex = images.size - 1
+        imagePreview.setImageBitmap(images[lastIndex].croppedBitmap)
 
     }
 
@@ -239,5 +248,26 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
         super.onResume()
 
         updateImageReview()
+
+        if(SourceManager.canFinishSession) {
+            finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                setResult(Activity.RESULT_OK)
+                finish()
+            } else {
+                if (intent.hasExtra(EdgeDetectionHandler.FROM_GALLERY) && intent.getBooleanExtra(
+                        EdgeDetectionHandler.FROM_GALLERY, false
+                    )
+                ) finish()
+            }
+        }
     }
 }

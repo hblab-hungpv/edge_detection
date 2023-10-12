@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -30,6 +31,7 @@ import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgcodecs.Imgcodecs
 import java.io.*
+import javax.sql.DataSource
 
 class ScanActivity : BaseActivity(), IScanView.Proxy {
 
@@ -116,6 +118,14 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         }
 
         findViewById<View>(R.id.shut).setOnClickListener {
+            if(SourceManager.images.size >= 10){
+                Toast.makeText(
+                    this@ScanActivity,
+                    R.string.add_new_image_error,
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             if (mPresenter.canShut) {
                 mPresenter.shut()
             }
@@ -324,7 +334,6 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         return byteBuffer.toByteArray()
     }
 
-
     private fun updateImageReview() {
         val images = SourceManager.images
         if (images.isEmpty()) {
@@ -333,7 +342,8 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         }
         imagePreviewContainer.visibility = View.VISIBLE
         imageCount.text = "${images.size}"
-        imagePreview.setImageBitmap(images[0].croppedBitmap)
+        val lastIndex = images.size - 1
+        imagePreview.setImageBitmap(images[lastIndex].croppedBitmap)
 
     }
 
@@ -341,5 +351,14 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         super.onResume()
 
         updateImageReview()
+        SourceManager.selectedIndex = -1
+
+        // Finish session
+        if (SourceManager.canFinishSession) {
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
+
+        SourceManager.canFinishSession = false
     }
 }

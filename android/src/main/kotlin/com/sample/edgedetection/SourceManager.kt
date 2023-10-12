@@ -11,6 +11,10 @@ class SourceManager {
 
         var images: ArrayList<ImageModel> = ArrayList()
 
+        var selectedIndex = -1
+
+        var canFinishSession = false
+
         // Add image to list
         fun addImage(image: ImageModel) {
             images.add(image)

@@ -19,4 +19,5 @@
     <string name="preview">Preview</string>
     <string name="save_as_draft">Save as Draft</string>
     <string name="submit_now">Submit now</string>
+    <string name="add_new_image_error">You can\'t add more than 10 images</string>
 </resources>

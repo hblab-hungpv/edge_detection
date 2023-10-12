@@ -160,7 +160,7 @@ class CropPresenter(
         croppedBitmap = croppedBitmap?.rotateInt(rotateBitmapDegree)
     }
 
-    fun save(cropIndex: Int, onSaveSuccess: () -> Unit) {
+    fun save(onSaveSuccess: () -> Unit) {
 
         val path = PathUtils.getFilesDir(context)
 
@@ -171,11 +171,13 @@ class CropPresenter(
             pic = picture, corners = corners, croppedBitmap = croppedBitmap, path = imageFilePath
         )
 
-        if (cropIndex != -1) {
-            SourceManager.images[cropIndex] = imageModel
+        if (SourceManager.selectedIndex != -1) {
+            Log.i(TAG, "save: #1 ")
+            SourceManager.images[SourceManager.selectedIndex] = imageModel
             onSaveSuccess()
             return
         }
+        Log.i(TAG, "save: #2")
         SourceManager.addImage(imageModel)
         onSaveSuccess()
         return
