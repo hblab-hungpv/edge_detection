@@ -152,7 +152,6 @@ class ReviewActivity : BaseActivity() {
             val cropIntent = Intent(this, CropActivity::class.java)
             cropIntent.putExtra(EdgeDetectionHandler.INITIAL_BUNDLE, this.initialBundle)
             cropIntent.putExtra(EdgeDetectionHandler.CROP_INDEX, currentIndex)
-            android.util.Log.i("HUNG_DEV", "prepare: $currentIndex")
             startActivityForResult(cropIntent, CROP_REQUEST_CODE)
         }
 

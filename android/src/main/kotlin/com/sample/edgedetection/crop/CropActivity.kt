@@ -53,7 +53,6 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
     override fun prepare() {
         this.initialBundle = intent.getBundleExtra(EdgeDetectionHandler.INITIAL_BUNDLE) as Bundle
         this.cropIndex = intent.getIntExtra(EdgeDetectionHandler.CROP_INDEX, -1)
-        android.util.Log.i("HUNG_DEV", "prepare: cropIndex: $cropIndex")
         this.title = initialBundle.getString(EdgeDetectionHandler.CROP_TITLE)
     }
 
