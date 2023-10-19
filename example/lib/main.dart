@@ -54,7 +54,6 @@ class _MyAppState extends State<MyApp> {
         androidCropBlackWhiteTitle: 'Black White',
         androidCropReset: 'Reset',
       );
-      print("xxxxxx: $path");
 
       final List<String> images = ImageDetected().imageDetectedFromJson(path);
 
@@ -64,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         _imagePath = images[0];
       });
     } catch (e) {
-      print('xxxxxx: $e');
+      print(e);
     }
 
     // If the widget was removed from the tree while the asynchronous platform

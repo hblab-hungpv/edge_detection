@@ -69,7 +69,7 @@ final class ReviewViewController: UIViewController {
         let closeImage = UIImage(named: "close")
         
         let button = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(cancelButtonTapped))
-        button.tintColor = .clear
+        button.tintColor = .white
         return button
     }()
     

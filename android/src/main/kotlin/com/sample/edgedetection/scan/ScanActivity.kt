@@ -114,7 +114,13 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
 
         // Back button
         findViewById<View>(R.id.close).setOnClickListener {
-            onBackPressed()
+            if (SourceManager.images.isNotEmpty()) {
+                val intent = Intent(this, ReviewActivity::class.java)
+                intent.putExtra(EdgeDetectionHandler.INITIAL_BUNDLE, this.initialBundle)
+                startActivityForResult(intent, REQUEST_CODE)
+            }else{
+                onBackPressed()
+            }
         }
 
         findViewById<View>(R.id.shut).setOnClickListener {

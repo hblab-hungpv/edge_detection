@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.sample.edgedetection.EdgeDetectionHandler
 import com.sample.edgedetection.R
 import com.sample.edgedetection.REQUEST_CODE
@@ -85,7 +86,11 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
         imagePreview = findViewById(R.id.imagePreview)
 
         closeIcon.setOnClickListener {
-            finish()
+            if (previewContainer.isVisible) {
+                updateLayoutCrop(true)
+            } else {
+                finish()
+            }
         }
         crop.setOnClickListener {
             Log.e(TAG, "Crop touched!")
@@ -248,7 +253,7 @@ class CropActivity : BaseActivity(), ICropView.Proxy {
 
         updateImageReview()
 
-        if(SourceManager.canFinishSession) {
+        if (SourceManager.canFinishSession) {
             finish()
         }
     }

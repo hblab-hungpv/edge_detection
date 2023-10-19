@@ -423,8 +423,14 @@ public final class ScannerViewController: UIViewController {
     }
 
     @objc private func cancelImageScannerController() {
-        guard let imageScannerController = navigationController as? ImageScannerController else { return }
-        imageScannerController.imageScannerDelegate?.imageScannerControllerDidCancel(imageScannerController)
+        if(DataSource.images.isEmpty){
+            guard let imageScannerController = navigationController as? ImageScannerController else { return }
+            imageScannerController.imageScannerDelegate?.imageScannerControllerDidCancel(imageScannerController)
+        }else{
+            // back confirmation screen
+            let confirmationVC = ConfirmationViewController(activeIndex: -1)
+            self.navigationController?.pushViewController(confirmationVC, animated: false)
+        }
     }
     
     // previewImageTapped
