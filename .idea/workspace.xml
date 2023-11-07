@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f08b3923-f33b-4d39-b5f6-cea7d389432e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/crop/CropActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/scan/ScanActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/sample/edgedetection/scan/ScanActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/res/raw/silence.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Review/ReviewViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Review/ReviewViewController.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Scan/ScannerViewController.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/WeScan-3.0.0/Sources/WeScan/Scan/ScannerViewController.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

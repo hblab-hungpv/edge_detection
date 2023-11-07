@@ -354,8 +354,21 @@ public final class ScannerViewController: UIViewController {
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
 
-        guard  let touch = touches.first else { return }
+        guard let touch = touches.first else { return }
         let touchPoint = touch.location(in: view)
+
+        // Get the height of the screen
+        let screenHeight = view.bounds.size.height
+
+        // Define the threshold for the lower 1/3 of the screen
+        let lowerThirdThreshold = 2.0 / 3.0 * screenHeight
+
+        // Check if the touch is in the lower 1/3 of the screen
+        if touchPoint.y >= lowerThirdThreshold {
+            // Ignore the touch if it's in the lower 1/3 of the screen
+            return
+        }
+
         let convertedTouchPoint: CGPoint = videoPreviewLayer.captureDevicePointConverted(fromLayerPoint: touchPoint)
 
         CaptureSession.current.removeFocusRectangleIfNeeded(focusRectangle, animated: false)
@@ -372,6 +385,7 @@ public final class ScannerViewController: UIViewController {
             return
         }
     }
+
 
     // MARK: - Actions
 
