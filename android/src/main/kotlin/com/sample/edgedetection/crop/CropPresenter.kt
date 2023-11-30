@@ -41,6 +41,7 @@ class CropPresenter(
     fun onViewsReady(paperWidth: Int, paperHeight: Int) {
         this.paperWidth = paperWidth
         this.paperHeight = paperHeight
+
         iCropView.getPaperRect().onCorners2Crop(corners, picture?.size(), paperWidth, paperHeight)
         val bitmap = Bitmap.createBitmap(
             picture?.width() ?: 1080, picture?.height() ?: 1920, Bitmap.Config.ARGB_8888
@@ -166,6 +167,13 @@ class CropPresenter(
 
         // Create image path by current system milliseconds and jpeg fomat:  "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
         val imageFilePath = "$path/${(System.currentTimeMillis() / 1000)}.jpeg"
+
+        val defaultCorners = Corners(
+            corners = iCropView.getPaperRect().getCorners2CropResized(),
+            size =  picture?.size() ?: org.opencv.core.Size(0.0, 0.0)
+        )
+
+        val corners = SourceManager.corners ?: defaultCorners
 
         val imageModel = ImageModel(
             pic = picture, corners = corners, croppedBitmap = croppedBitmap, path = imageFilePath
