@@ -66,6 +66,15 @@ class CropPresenter(
         }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
             .subscribe { pc ->
                 Log.i(TAG, "cropped picture: $pc")
+                // Update corners to SourceManager
+                SourceManager.corners = Corners(
+                    corners = iCropView.getPaperRect().getCorners2CropResized(),
+                    size = picture.size()
+                )
+
+                // Log the corners
+                Log.i(TAG, "CORNERS: ${SourceManager.corners}")
+
                 croppedPicture = pc
                 croppedBitmap =
                     Bitmap.createBitmap(pc.width(), pc.height(), Bitmap.Config.ARGB_8888)
@@ -81,7 +90,9 @@ class CropPresenter(
         iCropView.getPaperRect().visibility = View.VISIBLE
         iCropView.getCroppedPaper().setImageBitmap(null)
 
-        iCropView.getPaperRect().onCorners2Crop(corners, picture?.size(), paperWidth, paperHeight)
+        val cornersReset = corners ?: SourceManager.corners
+
+        iCropView.getPaperRect().onCorners2Crop(cornersReset , picture?.size(), paperWidth, paperHeight)
         val bitmap = Bitmap.createBitmap(
             picture?.width() ?: 1080, picture?.height() ?: 1920, Bitmap.Config.ARGB_8888
         )
@@ -180,63 +191,13 @@ class CropPresenter(
         )
 
         if (SourceManager.selectedIndex != -1) {
-            Log.i(TAG, "save: #1 ")
             SourceManager.images[SourceManager.selectedIndex] = imageModel
             onSaveSuccess()
             return
         }
-        Log.i(TAG, "save: #2")
+
         SourceManager.addImage(imageModel)
         onSaveSuccess()
-        return
-
-        // Copy from cropedBitmap to originalBitmap
-
-        val originalBitmap: Bitmap? = croppedBitmap?.let { Bitmap.createBitmap(it) }
-
-//        val file = File(initialBundle.getString(EdgeDetectionHandler.SAVE_TO) as String)
-        val file = File(imageFilePath)
-
-        val rotatePic = rotateBitmap
-        if (null != rotatePic) {
-            val outStream = FileOutputStream(file)
-            rotatePic.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
-            outStream.flush()
-            outStream.close()
-            rotatePic.recycle()
-            Log.i(TAG, "RotateBitmap Saved")
-        } else {
-            // first save enhanced picture, if picture is not enhanced, save cropped picture, otherwise nothing to do
-            val pic = enhancedPicture
-
-            if (null != pic) {
-                val outStream = FileOutputStream(file)
-                pic.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
-                outStream.flush()
-                outStream.close()
-                pic.recycle()
-                Log.i(TAG, "EnhancedPicture Saved")
-            } else {
-                val cropPic = croppedBitmap
-                if (null != cropPic) {
-                    val outStream = FileOutputStream(file)
-                    cropPic.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
-                    outStream.flush()
-                    outStream.close()
-                    cropPic.recycle()
-                    Log.i(TAG, "CroppedBitmap Saved")
-                }
-            }
-        }
-
-//        val imageModel = ImageModel(
-//            pic = picture,
-//            corners = corners,
-//            croppedBitmap = originalBitmap,
-//            path = imageFilePath
-//        )
-//        SourceManager.addImage(imageModel)
-//        onSaveSuccess()
     }
 
     // Extension function to rotate a bitmap
